@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Table from '../components/Table';
 import Button from '../components/Button';
-import Modal from '../components/Modal'; 
+import Modal from '../components/Modal';
 import { useNavigate } from 'react-router-dom';
 import { getEvents, deleteEvent } from '../services/eventService';
 
@@ -14,8 +14,8 @@ const EventList = () => {
   const [tagFilter, setTagFilter] = useState('');
   const [dateFilter, setDateFilter] = useState('');
   const [page, setPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);          //  modal state
-  const [eventToDelete, setEventToDelete] = useState(null);   // event id to delete
+  const [showModal, setShowModal] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState(null);
   const pageSize = 5;
 
   useEffect(() => {
@@ -27,7 +27,6 @@ const EventList = () => {
       .catch((err) => console.error('Failed to fetch events:', err));
   }, []);
 
-  // Filtering logic
   useEffect(() => {
     let temp = [...data];
 
@@ -57,7 +56,6 @@ const EventList = () => {
     setPage(1);
   }, [search, locationFilter, tagFilter, dateFilter, data]);
 
-  // Delete logic with modal
   const confirmDelete = (id) => {
     setEventToDelete(id);
     setShowModal(true);
@@ -111,62 +109,84 @@ const EventList = () => {
     Tags: event.tags,
     'Created At': new Date(event.created_at).toLocaleString(),
     Actions: (
-      <>
-        <Button className="mr-2" onClick={() => navigate(`/event/edit/${event.id}`)}>Edit</Button>
-        <Button className="mr-2 bg-red-600" onClick={() => confirmDelete(event.id)}>Delete</Button>
-        <Button onClick={() => navigate(`/event/register/${event.id}`)}>Register</Button>
-      </>
+      <div className="flex gap-2">
+        <Button size="sm" variant="primary" onClick={() => navigate(`/event/edit/${event.id}`)}>Edit</Button>
+        <Button size="sm" variant="danger" onClick={() => confirmDelete(event.id)}>Delete</Button>
+        <Button size="sm" variant="success" onClick={() => navigate(`/event/register/${event.id}`)}>Register</Button>
+      </div>
     )
   }));
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Event List</h1>
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-3xl font-semibold mb-6 text-gray-800">Event List</h1>
 
-      {/* Filters */}
-      <div className="flex flex-wrap gap-4 mb-4">
-        <Button onClick={() => navigate('/event/create')}>Add Event</Button>
+      {/* Filters Section */}
+      <div className="bg-white shadow rounded-lg p-4 mb-6">
+        <div className="flex justify-between items-center mb-4">
+          <Button onClick={() => navigate('/event/create')} variant="primary">+ Add Event</Button>
+        </div>
 
-        <input
-          type="text"
-          placeholder="Search by name"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="border p-2 rounded"
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
 
-        <select value={locationFilter} onChange={e => setLocationFilter(e.target.value)} className="border p-2 rounded">
-          <option value="">All Locations</option>
-          {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
-        </select>
+          <select
+            value={locationFilter}
+            onChange={e => setLocationFilter(e.target.value)}
+            className="border p-2 rounded w-full"
+          >
+            <option value="">All Locations</option>
+            {locations.map(loc => (
+              <option key={loc} value={loc}>{loc}</option>
+            ))}
+          </select>
 
-        <input
-          type="text"
-          placeholder="Filter by tag"
-          value={tagFilter}
-          onChange={e => setTagFilter(e.target.value)}
-          className="border p-2 rounded"
-        />
+          <input
+            type="text"
+            placeholder="Filter by tag"
+            value={tagFilter}
+            onChange={e => setTagFilter(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
 
-        <input
-          type="date"
-          value={dateFilter}
-          onChange={e => setDateFilter(e.target.value)}
-          className="border p-2 rounded"
-        />
+          <input
+            type="date"
+            value={dateFilter}
+            onChange={e => setDateFilter(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
+        </div>
       </div>
 
       {/* Event Table */}
-      <Table columns={columns} data={rows} />
+      {filtered.length > 0 ? (
+        <div className="bg-white shadow rounded-lg p-4">
+          <Table columns={columns} data={rows} />
+        </div>
+      ) : (
+        <div className="text-center text-gray-500 bg-white shadow p-6 rounded-lg">
+          No events found.
+        </div>
+      )}
 
       {/* Pagination */}
-      <div className="mt-4 flex justify-between items-center">
-        <p>Page {page} of {totalPages}</p>
-        <div className="flex gap-2">
-          <Button disabled={page === 1} onClick={() => setPage(p => p - 1)}>Previous</Button>
-          <Button disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>Next</Button>
+      {filtered.length > 0 && (
+        <div className="mt-6 flex justify-between items-center">
+          <p className="text-sm text-gray-600">
+            Page {page} of {totalPages} | Showing {paginated.length} of {filtered.length}
+          </p>
+          <div className="flex gap-2">
+            <Button disabled={page === 1} onClick={() => setPage(p => p - 1)} variant="ghost">Previous</Button>
+            <Button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} variant="ghost">Next</Button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Confirmation Modal */}
       {showModal && (
