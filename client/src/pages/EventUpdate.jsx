@@ -39,23 +39,26 @@ const EventUpdate = () => {
     onSubmit: async (values) => {
       try {
         await updateEvent(id, values);
-        alert('Event updated successfully');
+        alert('Event updated successfully'); // keep as requested
       } catch (err) {
         console.error('Update failed:', err);
-        alert('Failed to update event');
+        alert('Failed to update event'); // keep as requested
       }
     }
   });
 
-  // Fetch event data and populate form
   useEffect(() => {
     getEventById(id)
       .then((res) => {
-        const { name, description, date, location, created_by, capacity, remaining_capacity, tags } = res.data;
+        const {
+          name, description, date, location,
+          created_by, capacity, remaining_capacity, tags
+        } = res.data;
+
         formik.setValues({
           name,
           description,
-          date: date.split('T')[0], // Trim timestamp for input[type=date]
+          date: date.split('T')[0],
           location,
           created_by,
           capacity,
@@ -65,31 +68,38 @@ const EventUpdate = () => {
       })
       .catch((err) => {
         console.error('Failed to fetch event', err);
-        alert('Failed to load event');
+        alert('Failed to load event'); // keep as requested
       });
   }, [id]);
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Edit Event (ID: {id})</h1>
-      <form onSubmit={formik.handleSubmit}>
-        {['name', 'description', 'date', 'location', 'created_by', 'capacity', 'remaining_capacity', 'tags'].map((field) => (
-          <div key={field}>
-            <Input
-              label={field.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-              name={field}
-              type={field.includes('capacity') ? 'number' : field === 'date' ? 'date' : 'text'}
-              value={formik.values[field]}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched[field] && formik.errors[field] && (
-              <p className="text-sm text-red-600 -mt-2 mb-2">{formik.errors[field]}</p>
-            )}
-          </div>
-        ))}
-        <Button type="submit">Update Event</Button>
-      </form>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="p-6 max-w-xl w-full bg-white rounded-lg shadow-md">
+        <h1 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
+          Edit Event (ID: {id})
+        </h1>
+        <form onSubmit={formik.handleSubmit}>
+          {[
+            'name', 'description', 'date', 'location',
+            'created_by', 'capacity', 'remaining_capacity', 'tags'
+          ].map((field) => (
+            <div key={field} className="mb-4">
+              <Input
+                label={field.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                name={field}
+                type={field.includes('capacity') ? 'number' : field === 'date' ? 'date' : 'text'}
+                value={formik.values[field]}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched[field] && formik.errors[field] && (
+                <p className="text-sm text-red-600 -mt-2">{formik.errors[field]}</p>
+              )}
+            </div>
+          ))}
+          <Button type="submit" className="w-full mt-2">Update Event</Button>
+        </form>
+      </div>
     </div>
   );
 };
