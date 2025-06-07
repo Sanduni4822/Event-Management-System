@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
-// Get all events
+// ✅ Get all events - ordered by ID ASC
 exports.getAllEvents = async (req, res) => {
   try {
-    const [events] = await db.query('SELECT * FROM events ORDER BY created_at DESC');
+    const [events] = await db.query('SELECT * FROM events ORDER BY id ASC');
     res.json(events);
   } catch (err) {
     console.error('Failed to fetch events:', err);
@@ -11,7 +11,7 @@ exports.getAllEvents = async (req, res) => {
   }
 };
 
-// Get single event
+// ✅ Get single event
 exports.getEventById = async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM events WHERE id = ?', [req.params.id]);
@@ -22,7 +22,7 @@ exports.getEventById = async (req, res) => {
   }
 };
 
-// Create new event
+// ✅ Create new event
 exports.createEvent = async (req, res) => {
   const { name, description, date, location, created_by, capacity, tags } = req.body;
   if (!name || !date || !location) return res.status(400).json({ error: 'Missing required fields' });
@@ -38,7 +38,7 @@ exports.createEvent = async (req, res) => {
   }
 };
 
-// Update event
+// ✅ Update event
 exports.updateEvent = async (req, res) => {
   const { name, description, date, location, created_by, capacity, tags } = req.body;
 
@@ -55,7 +55,7 @@ exports.updateEvent = async (req, res) => {
   }
 };
 
-// Delete event
+// ✅ Delete event
 exports.deleteEvent = async (req, res) => {
   try {
     const [result] = await db.query('DELETE FROM events WHERE id = ?', [req.params.id]);
@@ -67,7 +67,7 @@ exports.deleteEvent = async (req, res) => {
   }
 };
 
-// Register attendee
+// ✅ Register attendee
 exports.registerAttendee = async (req, res) => {
   const { name, email } = req.body;
   const { id } = req.params;
@@ -92,7 +92,7 @@ exports.registerAttendee = async (req, res) => {
   }
 };
 
-// Get attendees for an event
+// ✅ Get attendees for an event
 exports.getAttendeesForEvent = async (req, res) => {
   try {
     const [attendees] = await db.query('SELECT name, email FROM attendees WHERE event_id = ?', [req.params.id]);
@@ -102,7 +102,7 @@ exports.getAttendeesForEvent = async (req, res) => {
   }
 };
 
-// Analytics endpoint (NEW)
+// ✅ Event Analytics
 exports.getEventAnalytics = async (req, res) => {
   try {
     const [events] = await db.query('SELECT id, capacity FROM events');
