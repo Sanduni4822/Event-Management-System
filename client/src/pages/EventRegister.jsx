@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -14,41 +13,45 @@ const validationSchema = Yup.object({
 
 const EventRegister = () => {
   const { id } = useParams();
+
   const formik = useFormik({
     initialValues: { name: '', email: '' },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
         const res = await registerAttendee(id, values);
-        alert(res.data.message);
+        alert(res.data.message); // ✅ keep this
         resetForm();
       } catch (err) {
-        alert(err.response?.data?.error || 'Registration failed');
+        alert(err.response?.data?.error || 'Registration failed'); // ✅ keep this
       }
     }
   });
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h1 className="text-xl font-bold mb-4">Register for Event</h1>
-      <form onSubmit={formik.handleSubmit}>
-        {['name', 'email'].map((field) => (
-          <div key={field}>
-            <Input
-              label={field.charAt(0).toUpperCase() + field.slice(1)}
-              name={field}
-              type={field === 'email' ? 'email' : 'text'}
-              value={formik.values[field]}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched[field] && formik.errors[field] && (
-              <p className="text-sm text-red-600 -mt-2 mb-2">{formik.errors[field]}</p>
-            )}
-          </div>
-        ))}
-        <Button type="submit">Register</Button>
-      </form>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Register for Event</h1>
+
+        <form onSubmit={formik.handleSubmit}>
+          {['name', 'email'].map((field) => (
+            <div key={field} className="mb-4">
+              <Input
+                label={field.charAt(0).toUpperCase() + field.slice(1)}
+                name={field}
+                type={field === 'email' ? 'email' : 'text'}
+                value={formik.values[field]}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched[field] && formik.errors[field] && (
+                <p className="text-sm text-red-600 -mt-2 mb-2">{formik.errors[field]}</p>
+              )}
+            </div>
+          ))}
+          <Button type="submit" className="w-full">Register</Button>
+        </form>
+      </div>
     </div>
   );
 };
