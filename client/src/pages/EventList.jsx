@@ -182,8 +182,8 @@ const EventList = () => {
             Page {page} of {totalPages} | Showing {paginated.length} of {filtered.length}
           </p>
           <div className="flex gap-2">
-            <Button disabled={page === 1} onClick={() => setPage(p => p - 1)} variant="ghost">Previous</Button>
-            <Button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} variant="ghost">Next</Button>
+            <Button disabled={page === 1} onClick={() => setPage(p => p - 1)} variant="secondary">Previous</Button>
+            <Button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} variant="secondary">Next</Button>
           </div>
         </div>
       )}
@@ -202,3 +202,4 @@ const EventList = () => {
 };
 
 export default EventList;
+

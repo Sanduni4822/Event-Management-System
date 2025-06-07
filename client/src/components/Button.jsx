@@ -3,7 +3,9 @@ import React from 'react';
 const variantClasses = {
   primary: 'bg-blue-600 text-white hover:bg-blue-700',
   danger: 'bg-red-600 text-white hover:bg-red-700',
-  ghost: 'bg-gray-200 text-gray-700 hover:bg-gray-300',
+  success: 'bg-green-600 text-white hover:bg-green-700',
+  secondary: 'bg-gray-600 text-white hover:bg-gray-700',
+  ghost: 'bg-transparent text-gray-700 hover:bg-gray-100',
 };
 
 const sizeClasses = {
@@ -17,19 +19,19 @@ const Button = ({
   onClick,
   type = 'button',
   disabled = false,
-  variant = 'primary', // default to primary
+  variant = 'primary',
   size = 'md',
   className = '',
   ...props
 }) => {
-  const combinedClasses = `
-    rounded 
-    transition 
-    duration-150 
-    disabled:opacity-50 
-    disabled:cursor-not-allowed 
-    ${variantClasses[variant] || ''} 
-    ${sizeClasses[size] || ''} 
+  const baseClasses = `
+    inline-flex items-center justify-center
+    font-medium rounded
+    transition duration-150
+    disabled:opacity-50 disabled:cursor-not-allowed
+    focus:outline-none focus:ring-2 focus:ring-offset-2
+    ${variantClasses[variant] || ''}
+    ${sizeClasses[size] || ''}
     ${className}
   `;
 
@@ -38,7 +40,7 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={combinedClasses}
+      className={baseClasses}
       {...props}
     >
       {children}
