@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -46,8 +45,8 @@ const EventCreate = () => {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Create New Event</h1>
-      <form onSubmit={formik.handleSubmit}>
+      <h1 className="text-2xl font-bold mb-4 text-center">Create New Event</h1>
+      <form onSubmit={formik.handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
         {['name', 'description', 'date', 'location', 'created_by', 'capacity', 'tags'].map((field) => (
           <div key={field}>
             <Input
