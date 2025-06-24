@@ -121,7 +121,6 @@ const EventList = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-semibold mb-6 text-gray-800">Event List</h1>
 
-      {/* Filters Section */}
       <div className="bg-white shadow rounded-lg p-4 mb-6">
         <div className="flex justify-between items-center mb-4">
           <Button onClick={() => navigate('/event/create')} variant="primary">+ Add Event</Button>
@@ -164,7 +163,6 @@ const EventList = () => {
         </div>
       </div>
 
-      {/* Event Table */}
       {filtered.length > 0 ? (
         <div className="bg-white shadow rounded-lg p-4">
           <Table columns={columns} data={rows} />
@@ -175,7 +173,6 @@ const EventList = () => {
         </div>
       )}
 
-      {/* Pagination */}
       {filtered.length > 0 && (
         <div className="mt-6 flex justify-between items-center">
           <p className="text-sm text-gray-600">
@@ -188,7 +185,6 @@ const EventList = () => {
         </div>
       )}
 
-      {/* Confirmation Modal */}
       {showModal && (
         <Modal
           title="Confirm Deletion"
@@ -202,4 +198,3 @@ const EventList = () => {
 };
 
 export default EventList;
-
