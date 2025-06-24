@@ -1,7 +1,19 @@
-const Input = ({ label, ...props }) => (
+import React from 'react';
+
+const Input = ({ label, id, type = "text", ...props }) => (
   <div className="mb-4">
-    <label className="block text-sm font-medium mb-1 text-gray-700">{label}</label>
-    <input {...props} className="w-full p-2 border border-gray-300 rounded" />
+    {label && (
+      <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
+        {label}
+      </label>
+    )}
+    <input
+      id={id}
+      type={type}
+      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      {...props}
+    />
   </div>
 );
+
 export default Input;
