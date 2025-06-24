@@ -105,14 +105,23 @@ const EventList = () => {
     Location: event.location,
     'Created By': event.created_by,
     Capacity: event.capacity,
-    Remaining: event.remaining_capacity,
+    Remaining: event.remaining === 0
+      ? <span className="text-red-500 font-bold">Full</span>
+      : event.remaining,
     Tags: event.tags,
     'Created At': new Date(event.created_at).toLocaleString(),
     Actions: (
       <div className="flex gap-2">
         <Button size="sm" variant="primary" onClick={() => navigate(`/event/edit/${event.id}`)}>Edit</Button>
         <Button size="sm" variant="danger" onClick={() => confirmDelete(event.id)}>Delete</Button>
-        <Button size="sm" variant="success" onClick={() => navigate(`/event/register/${event.id}`)}>Register</Button>
+        <Button
+          size="sm"
+          variant="success"
+          onClick={() => navigate(`/event/register/${event.id}`)}
+          disabled={event.remaining === 0}
+        >
+          Register
+        </Button>
       </div>
     )
   }));
