@@ -1,8 +1,17 @@
 const db = require('../config/db');
 
-// Get all events
+// Get all events with remaining capacity
 exports.getAllEvents = async () => {
   const [events] = await db.query('SELECT * FROM events ORDER BY id ASC');
+
+  for (let event of events) {
+    const [attendeeRows] = await db.query(
+      'SELECT COUNT(*) AS count FROM attendees WHERE event_id = ?',
+      [event.id]
+    );
+    event.remaining = event.capacity - attendeeRows[0].count;
+  }
+
   return events;
 };
 
