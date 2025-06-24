@@ -48,9 +48,11 @@ const EventList = () => {
     }
 
     if (dateFilter) {
-      temp = temp.filter(event =>
-        event.date.startsWith(dateFilter)
-      );
+      temp = temp.filter(event => {
+        const localDate = new Date(event.date);
+        const formatted = localDate.toLocaleDateString('sv-SE'); // yyyy-mm-dd
+        return formatted === dateFilter;
+      });
     }
 
     setFiltered(temp);
@@ -132,7 +134,6 @@ const EventList = () => {
       className="min-h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
-      {/* Transparent overlay */}
       <div className="p-6 bg-white bg-opacity-60 backdrop-blur-sm min-h-screen">
         <h1 className="text-3xl font-semibold mb-6 text-gray-800">Event List</h1>
 
