@@ -44,26 +44,30 @@ const EventCreate = () => {
   });
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4 text-center">Create New Event</h1>
-      <form onSubmit={formik.handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
-        {['name', 'description', 'date', 'location', 'created_by', 'capacity', 'tags'].map((field) => (
-          <div key={field}>
-            <Input
-              label={field.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-              name={field}
-              type={field === 'capacity' ? 'number' : field === 'date' ? 'date' : 'text'}
-              value={formik.values[field]}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched[field] && formik.errors[field] && (
-              <p className="text-sm text-red-600 -mt-2 mb-2">{formik.errors[field]}</p>
-            )}
-          </div>
-        ))}
-        <Button type="submit">Create Event</Button>
-      </form>
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="p-6 max-w-xl w-full bg-white rounded-lg shadow-md shadow-slate-200">
+        <h1 className="text-3xl font-semibold text-slate-800 mb-6 text-center">
+          Create New Event
+        </h1>
+        <form onSubmit={formik.handleSubmit}>
+          {['name', 'description', 'date', 'location', 'created_by', 'capacity', 'tags'].map((field) => (
+            <div key={field} className="mb-4">
+              <Input
+                label={field.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                name={field}
+                type={field === 'capacity' ? 'number' : field === 'date' ? 'date' : 'text'}
+                value={formik.values[field]}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched[field] && formik.errors[field] && (
+                <p className="text-sm text-red-600 -mt-2 mb-2">{formik.errors[field]}</p>
+              )}
+            </div>
+          ))}
+          <Button type="submit" className="w-full mt-2">Create Event</Button>
+        </form>
+      </div>
     </div>
   );
 };
