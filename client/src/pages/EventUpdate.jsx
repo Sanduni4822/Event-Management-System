@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { getEventById, updateEvent } from '../services/eventService';
+import bgImage from '../assets/event.jpg'; 
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Required').max(100),
@@ -73,32 +74,37 @@ const EventUpdate = () => {
   }, [id]);
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
-      <div className="p-6 max-w-xl w-full bg-white rounded-xl shadow-lg">
-        <h1 className="text-2xl font-bold text-blue-600 mb-6 text-center">
-          Edit Event (ID: {id})
-        </h1>
-        <form onSubmit={formik.handleSubmit}>
-          {[
-            'name', 'description', 'date', 'location',
-            'created_by', 'capacity', 'remaining_capacity', 'tags'
-          ].map((field) => (
-            <div key={field} className="mb-4">
-              <Input
-                label={field.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                name={field}
-                type={field.includes('capacity') ? 'number' : field === 'date' ? 'date' : 'text'}
-                value={formik.values[field]}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched[field] && formik.errors[field] && (
-                <p className="text-sm text-red-600 -mt-2">{formik.errors[field]}</p>
-              )}
-            </div>
-          ))}
-          <Button type="submit" className="w-full mt-2">Update Event</Button>
-        </form>
+    <div
+      className="min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
+      <div className="min-h-screen bg-white bg-opacity-90 flex items-center justify-center px-4">
+        <div className="p-6 max-w-xl w-full bg-white rounded-xl shadow-lg">
+          <h1 className="text-2xl font-bold text-blue-600 mb-6 text-center">
+            Edit Event (ID: {id})
+          </h1>
+          <form onSubmit={formik.handleSubmit}>
+            {[
+              'name', 'description', 'date', 'location',
+              'created_by', 'capacity', 'remaining_capacity', 'tags'
+            ].map((field) => (
+              <div key={field} className="mb-4">
+                <Input
+                  label={field.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                  name={field}
+                  type={field.includes('capacity') ? 'number' : field === 'date' ? 'date' : 'text'}
+                  value={formik.values[field]}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched[field] && formik.errors[field] && (
+                  <p className="text-sm text-red-600 -mt-2">{formik.errors[field]}</p>
+                )}
+              </div>
+            ))}
+            <Button type="submit" className="w-full mt-2">Update Event</Button>
+          </form>
+        </div>
       </div>
     </div>
   );
