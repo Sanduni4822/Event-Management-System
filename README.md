@@ -8,8 +8,6 @@ A full-stack web application to create, manage, and analyze events. Built with:
 - **Backend:** Node.js + Express.js  
 - **Database:** MySQL
 
-This project is part of the intern software engineer assignment.
-
 
 ## Features
 
