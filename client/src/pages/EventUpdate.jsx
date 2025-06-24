@@ -39,10 +39,10 @@ const EventUpdate = () => {
     onSubmit: async (values) => {
       try {
         await updateEvent(id, values);
-        alert('Event updated successfully'); // keep as requested
+        alert('Event updated successfully');
       } catch (err) {
         console.error('Update failed:', err);
-        alert('Failed to update event'); // keep as requested
+        alert('Failed to update event');
       }
     }
   });
@@ -68,14 +68,14 @@ const EventUpdate = () => {
       })
       .catch((err) => {
         console.error('Failed to fetch event', err);
-        alert('Failed to load event'); // keep as requested
+        alert('Failed to load event');
       });
   }, [id]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="p-6 max-w-xl w-full bg-white rounded-lg shadow-md">
-        <h1 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
+      <div className="p-6 max-w-xl w-full bg-white rounded-xl shadow-lg">
+        <h1 className="text-2xl font-bold text-blue-600 mb-6 text-center">
           Edit Event (ID: {id})
         </h1>
         <form onSubmit={formik.handleSubmit}>

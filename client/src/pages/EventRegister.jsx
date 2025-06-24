@@ -6,6 +6,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { registerAttendee } from '../services/eventService';
 
+// Validation Schema
 const validationSchema = Yup.object({
   name: Yup.string().required('Required').max(100),
   email: Yup.string().email('Invalid email').required('Required')
@@ -20,18 +21,20 @@ const EventRegister = () => {
     onSubmit: async (values, { resetForm }) => {
       try {
         const res = await registerAttendee(id, values);
-        alert(res.data.message); // ✅ keep this
+        alert(res.data.message);
         resetForm();
       } catch (err) {
-        alert(err.response?.data?.error || 'Registration failed'); // ✅ keep this
+        alert(err.response?.data?.error || 'Registration failed');
       }
     }
   });
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
       <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Register for Event</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center text-blue-600">
+          Register for Event
+        </h1>
 
         <form onSubmit={formik.handleSubmit}>
           {['name', 'email'].map((field) => (
@@ -45,11 +48,15 @@ const EventRegister = () => {
                 onBlur={formik.handleBlur}
               />
               {formik.touched[field] && formik.errors[field] && (
-                <p className="text-sm text-red-600 -mt-2 mb-2">{formik.errors[field]}</p>
+                <p className="text-sm text-red-600 -mt-2 mb-2">
+                  {formik.errors[field]}
+                </p>
               )}
             </div>
           ))}
-          <Button type="submit" className="w-full">Register</Button>
+          <Button type="submit" className="w-full">
+            Register
+          </Button>
         </form>
       </div>
     </div>
